@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+<h1>All Unscheduled Trips</h1>
+<div v-cloak id="trips-future">
+    <div v-for="trip in trips">
+        <div class="trip-display">
+            <a class="trip-link" v-bind:href="'/schedule/trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/trip/unscheduled.js' %}"></script>
+
+{% endblock scripts %}

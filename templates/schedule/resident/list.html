@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table>
+    {% for resident in residents %}
+    <tr>
+        <td>
+            {{resident}}
+        </td>
+        <td>
+            <a href='{% url "schedule:edit_resident" pk=resident.pk %}'>Edit</a>
+        </td>
+    </tr>
+    {% empty %}
+    No Trips.
+    {% endfor %}
+</table>
+
+{% endblock content %}

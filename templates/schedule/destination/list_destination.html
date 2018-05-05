@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table>
+    {% for destination in object_list %}
+    <tr>
+        <td>
+            {{destination}}
+        </td>
+    </tr>
+    {% empty %}
+    No Trips.
+    {% endfor %}
+</table>
+
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>File an Issue</h1>
+
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Finish</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<form action="" method="GET">
+    <label for="transportation_provider">Transport Provider: </label>
+    <select name="transportation_provider">
+        {% for choice in Trip.TRANSPORT_PROVIDERS %}
+            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="OK">
+</form>
+
+{% endblock content %}

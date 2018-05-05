@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>Dashboard</h1>
+<div class="display-content">
+    <div v-cloak id="trips-today">
+        <h3>Today&#39;s Rides</h3>
+        <div v-for="trip in trips">
+            <div class="trip-display">
+                <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div v-cloak id="trips-future">
+        <div class="time-banner">
+            <span>
+                Rides For The Next
+            </span>
+            <input type="text" id="#days" v-model="days" v-on:keypress="checkSubmit" class="time-input">
+            <span>Days</span>
+        </div>
+        <div v-for="trip in trips">
+            <div class="trip-display">
+                <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+</div>
+
+{% endif %}
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+<script src="{% static 'js/dashboard/trips_future.js' %}"></script>
+
+{% endblock scripts %}

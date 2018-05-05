@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class='detail_content'>
+    <h2>{{issue.trip.resident}} going to {{issue.trip.destination}} on {{issue.trip.trip_date}}</h2>
+    <ul>
+        <li>Issue: {{issue.issue_type}}</li>
+        <li>Description: {{issue.trip.pick_up_time}}</li>
+        <li>Pick up: {{issue.description}}</li>
+        <li>Return: {{trip.return_time}}</li>
+        <li>Reason for Trip: {{trip.proceduere}}</li>
+        <li>Notes: {{trip.notes}}</li>
+    </ul>
+</div>
+{% endblock content %}

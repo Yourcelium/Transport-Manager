@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div>
+    <h2>Trip: {{trip.resident}} going to {{trip.destination}} on {{trip.trip_date}}</h2>
+    <ul>
+        <li>Pick up: {{trip.pick_up_time}}</li>
+        <li>Return: {{trip.return_time}}</li>
+        <li>Reason for Trip: {{trip.proceduere}}</li>
+        <li>Notes: {{trip.notes}}</li>
+    </ul>
+    <button href>Delete This Trip?</button>
+</div>
+
+{% endblock content %}

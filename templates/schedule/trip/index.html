@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transportation | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    {% block stylesheets %}{% endblock %}
+
+<div class="site-wrapper">
+    
+    <div class="site-wrapper-inner">
+        
+        <div class="container">
+            
+            <div class="masthead clearfix">
+                <div class="container inner">
+                    <h3 class="masthead-brand">Transporation Manager</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li><a href="#">Follow Up</a></li>
+                            <li><a href="#">Manage</a></li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="inner cover">
+                <h1 class="cover-heading">Make Sure They Get There.</h1>
+                <p class="lead">Get your people where the need to be, on time, every time. BING BONG</p>
+                <p class="lead">
+                    <a href="#" class="btn btn-lg btn-default">Request Transport</a>
+                    <a href="#" class="btn btn-lg btn-default">Schedule Transport</a>
+                    
+                </p>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+<script src="//cdn.bootcss.com/bootstrap/3.3./js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
