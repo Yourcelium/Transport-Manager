@@ -12,7 +12,7 @@ new Vue({
         getTodayTrips: function(){
             this.loading=true;
             var self = this
-            $.get('/schedule/trip/today')
+            $.get('/schedule/trip/today' + '?floor=' + self.floor)
             .done(function(todayTrips){
                 self.todayTrips = todayTrips
                 self.loading = false;
@@ -30,6 +30,13 @@ new Vue({
 
         checkSubmitDays: function(event){
             if (event.code === 'Enter'){
+                this.getFutureTrips()
+            }
+        },
+
+        checkSubmitFloor: function(event){
+            if (event){
+                this.getTodayTrips()
                 this.getFutureTrips()
             }
         }

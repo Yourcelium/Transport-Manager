@@ -2,11 +2,12 @@
 
 {% block content %}
 <div class='detail_content'>
-    <h2>{{trip.resident}} going to {{trip.destination}} on {{trip.trip_date}}</h2>
+    <h2>{{trip.resident.first_name}} going to {{trip.procedure}} on {{trip.appointment_datetime.date}}</h2>
     <ul>
-        <li>Pick up: {{trip.pick_up_time}}</li>
+        <li>Destination: {{trip.destination}}</li>
+        <li>Pick up: {{trip.trip_datetime.time}}</li>        
         <li>Return: {{trip.return_time}}</li>
-        <li>Reason for Trip: {{trip.proceduere}}</li>
+        <li>Transportation Provider: {{trip.transportation_provider}}</li>
         <li>Notes: {{trip.notes}}</li>
     </ul>
 </div>

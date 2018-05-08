@@ -10,7 +10,7 @@
         Days: <input type="text" v-model="days" v-on:keypress="checkSubmitDays">
         </div>
         <div class="floor-input input">
-            <select name="floor" v-model="floor">
+            <select name="floor" v-model="floor" v-on:change="checkSubmitFloor">
                 <option value="0">All</option>
                 <option value="2">2nd</option>
                 <option value="3">3rd</option>

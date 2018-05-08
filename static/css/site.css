@@ -164,3 +164,9 @@ body {
   height: 400px;
   overflow: scroll;
 }
+
+.trip-form{
+  display:grid;
+  grid-template-columns: 1fr 1fr;  
+  
+}

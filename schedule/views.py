@@ -100,6 +100,8 @@ def list_today_trips(request):
         residents = [Q(resident=resident) for resident in residents]
         trips = Trip.objects.filter(reduce(operator.or_, residents), trip_datetime__date=datetime.today()).order_by('-trip_datetime')
         trips = TripSerializer(trips, many=True)
+        return Response(trips.data)
+        
 
 @api_view(['GET'])
 def api_triplist_unscheduled(request):

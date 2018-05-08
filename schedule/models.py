@@ -33,7 +33,9 @@ class MedicalProvider(models.Model):
     
 
 class Trip(models.Model):
-    arranged_by = models.ForeignKey(User, related_name='trips', on_delete=models.CASCADE) 
+    
+    
+    arranged_by = models.ForeignKey(User, related_name='trips', on_delete=models.CASCADE) #make this charfield, not track this?    
     TRANSPORT_PROVIDERS = (
         ('M', 'Metro West'),
         ('R', 'Ride to Care'),

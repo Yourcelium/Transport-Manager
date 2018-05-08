@@ -2,13 +2,15 @@
 
 {% block content %}
 {% if request.user.is_authenticated %}
-<h1>Schedule a Ride</h1>
+<h1>Create a Ride Request</h1>
 
 <div>
     <form method="POST" style="position: relative">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button>Complete Trip</button>
+        <div class="trip-form">
+            {{ form.as_p }}
+        </div>
+        <button>Complete</button>
     </form>
 </div>
 {% endif %}

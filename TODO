@@ -1,7 +1,11 @@
 Vue Frontend:
-  ☐ complete query params for unscheduled trips @low 
+  ☐ complete query params for unscheduled trips @low
+  scehdule ride
+
+Backend:
+  ☐ return print out of trip
+  ☐ make trip detail eitable field (maybe pops out another window?)
 
 Questions:
-  What does operator do?
-  How is cue object compiling, by OR Operator and storing it in residents? or its just the object that is getting returned
-  
+  ☐ What does operator do?
+  ☐ How is cue object compiling, by OR Operator and storing it in residents? or its just the object that is getting returnd
