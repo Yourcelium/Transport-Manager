@@ -156,3 +156,11 @@ body {
 .time-banner {
   font-size: 2em;
 }
+
+.trip-list-display {
+  border: 5px solid groove;
+  border-style: inset;
+  padding: 10px;
+  height: 400px;
+  overflow: scroll;
+}

@@ -1,8 +1,11 @@
+import operator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View, CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.http import JsonResponse
+from django.db.models import Q, QuerySet
 
 from datetime import timezone, datetime, timedelta
+from functools import reduce
 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -87,18 +90,16 @@ def render_unscheduled_triplist(request):
 # API VIEWS
 @api_view(['GET'])
 def list_today_trips(request):
-    trips = Trip.objects.filter(trip_datetime__date=datetime.today())
-    trips = TripSerializer(trips, many=True)
-    return Response(trips.data)
-
-@api_view(['GET'])
-def list_future_trips(request):
-    days = int(request.GET.get('days', 7))
-    end = datetime.today() + timedelta(days=days)
-    tomorrow = datetime.today() + timedelta(days=1)
-    trips = Trip.objects.filter(trip_datetime__date__gte=tomorrow, trip_datetime__date__lte=end)
-    trips = TripSerializer(trips, many=True)
-    return Response(trips.data)
+    floor = int(request.GET.get('floor', 0))
+    if floor == 0:
+        trips = Trip.objects.filter(trip_datetime__date=datetime.today())
+        trips = TripSerializer(trips, many=True)
+        return Response(trips.data)
+    else:
+        residents = Resident.objects.filter(room_number__startswith=floor)
+        residents = [Q(resident=resident) for resident in residents]
+        trips = Trip.objects.filter(reduce(operator.or_, residents), trip_datetime__date=datetime.today()).order_by('-trip_datetime')
+        trips = TripSerializer(trips, many=True)
 
 @api_view(['GET'])
 def api_triplist_unscheduled(request):
@@ -107,7 +108,22 @@ def api_triplist_unscheduled(request):
     trips = TripSerializer(trips, many=True)
     return Response(trips.data)
 
-
+@api_view(['GET'])
+def list_future_trips(request):
+    floor = int(request.GET.get('floor', 0))
+    days = int(request.GET.get('days', 7))    
+    end = datetime.today() + timedelta(days=days)
+    tomorrow = datetime.today() + timedelta(days=1)
+    if floor == 0:
+        trips = Trip.objects.filter(trip_datetime__date__gte=tomorrow, trip_datetime__date__lte=end).order_by('-trip_datetime')
+        trips = TripSerializer(trips, many=True)
+        return Response(trips.data)
+    else:    
+        residents = Resident.objects.filter(room_number__startswith=floor)
+        residents = [Q(resident=resident) for resident in residents]
+        trips = Trip.objects.filter(reduce(operator.or_, residents), trip_datetime__date__gte=tomorrow, trip_datetime__date__lte=end).order_by('-trip_datetime')
+        trips = TripSerializer(trips, many=True)
+        return Response(trips.data)
 
 
 

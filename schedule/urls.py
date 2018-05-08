@@ -20,7 +20,6 @@ urlpatterns = [
     path('trip/api_triplist_unscheduled', views.api_triplist_unscheduled, name='api_triplist_unscheduled'),
     path('trip/api_unscheduled', views.render_unscheduled_triplist, name='api_triplist_unscheduled'),
 
-
     #Resident
     path('resident/', views.list_residents, name='list_residents'),
     path('resident/create/', views.create_resident, name='create_resident'),

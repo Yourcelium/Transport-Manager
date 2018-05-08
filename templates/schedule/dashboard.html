@@ -4,34 +4,46 @@
 {% block content %}
 {% if request.user.is_authenticated %}
 <h1>Dashboard</h1>
-<div class="display-content">
-    <div v-cloak id="trips-today">
-        <h3>Today&#39;s Rides</h3>
-        <div v-for="trip in trips">
-            <div class="trip-display">
-                <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+<div id="dashboard">
+    <div class="control-pannel">
+        <div class="time-input input">
+        Days: <input type="text" v-model="days" v-on:keypress="checkSubmitDays">
+        </div>
+        <div class="floor-input input">
+            <select name="floor" v-model="floor">
+                <option value="0">All</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="5">5th</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="display-content">
+        <div v-cloak id="trips-today" class="trip-list-display">
+            <h3>Today&#39;s Rides</h3>
+            <div v-for="trip in todayTrips">
+                <div class="trip-display">
+                    <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+                </div>
+            </div>
+            
+        </div>
+        <div class="trip-list-display">
+            <div v-cloak id="trips-future" >
+                <h3>Upcoming Rides</h3>
+                <div v-for="trip in futureTrips">
+                    <div class="trip-display">
+                        <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+                    </div>
+                </div>
+                
             </div>
         </div>
         
-    </div>
-    
-    <div v-cloak id="trips-future">
-        <div class="time-banner">
-            <span>
-                Rides For The Next
-            </span>
-            <input type="text" id="#days" v-model="days" v-on:keypress="checkSubmit" class="time-input">
-            <span>Days</span>
-        </div>
-        <div v-for="trip in trips">
-            <div class="trip-display">
-                <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
-            </div>
-        </div>
         
     </div>
-    
-    
 </div>
 
 {% endif %}
@@ -40,6 +52,5 @@
 
 {% block scripts %}
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
-<script src="{% static 'js/dashboard/trips_future.js' %}"></script>
 
 {% endblock scripts %}

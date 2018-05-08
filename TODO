@@ -1,2 +1,7 @@
 Vue Frontend:
   ☐ complete query params for unscheduled trips @low 
+
+Questions:
+  What does operator do?
+  How is cue object compiling, by OR Operator and storing it in residents? or its just the object that is getting returned
+  

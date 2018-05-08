@@ -6,7 +6,7 @@ class Resident(models.Model):
     last_name=models.CharField(max_length=35)
     date_of_birth = models.DateField()
     medicaid_number = models.CharField(max_length=8, blank=True, null=True)
-    room_number = models.CharField(max_length=5, blank=True, null=True)
+    room_number = models.CharField(max_length=5)
     ride_to_care_eligble = models.BooleanField(default=False)
     can_transfer = models.BooleanField(default=False)
     wheelchair_van = models.BooleanField(default=True)
