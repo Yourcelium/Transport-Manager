@@ -59,8 +59,6 @@ def delete_trip(request, pk):
         trip.delete()
         return redirect('schedule:list_trips')
 
-
-
 def pull_triplist_unscheduled(request):
     trips = Trip.objects.all().filter(trip_scheduled_status=False)
     return render(request, 'schedule/trip/list_trips.html', {'trips':trips, 'title':'All Unscheduled Trips'})
@@ -105,8 +103,8 @@ def list_today_trips(request):
 
 @api_view(['GET'])
 def api_triplist_unscheduled(request):
-    days = int(request.GET.get('days', 7))    
-    trips = Trip.objects.filter(trip_scheduled_status=False)
+    days = int(request.GET.get('days', 7))
+    trips = Trip.objects.filter(trip_scheduled_status=False, trip_datetime__gte=datetime.now())
     trips = TripSerializer(trips, many=True)
     return Response(trips.data)
 
@@ -127,7 +125,15 @@ def list_future_trips(request):
         trips = TripSerializer(trips, many=True)
         return Response(trips.data)
 
+def render_trip_request(request):
+    return render(request, 'schedule/trip/vue/trip_request.html')
 
+@api_view(['GET'])
+def resident_search(request):
+    full_name= request.GET.get('full_name')
+    DOB = request.GET.get('DOB')
+    resident = Resident.objects.filter(full_name__icontains=full_name)
+    import pdb; pdb.set_trace()
 
 
 
@@ -160,6 +166,8 @@ def edit_resident(request, pk):
             resident = form.save(commit=False)
             trip.save()
             return redirect('schedule:detail_resident', pk=resident.pk)
+
+
 
 
 #Medcial Provider

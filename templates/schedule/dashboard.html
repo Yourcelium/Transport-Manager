@@ -5,11 +5,12 @@
 {% if request.user.is_authenticated %}
 <h1>Dashboard</h1>
 <div id="dashboard">
-    <div class="control-pannel">
+    <div class="control-panel">
         <div class="time-input input">
         Days: <input type="text" v-model="days" v-on:keypress="checkSubmitDays">
         </div>
         <div class="floor-input input">
+            Floor: 
             <select name="floor" v-model="floor" v-on:change="checkSubmitFloor">
                 <option value="0">All</option>
                 <option value="2">2nd</option>

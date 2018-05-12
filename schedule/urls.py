@@ -19,12 +19,14 @@ urlpatterns = [
     path('trip/future', views.list_future_trips, name='list_future_trips'),
     path('trip/api_triplist_unscheduled', views.api_triplist_unscheduled, name='api_triplist_unscheduled'),
     path('trip/api_unscheduled', views.render_unscheduled_triplist, name='api_triplist_unscheduled'),
+    path('trip/request', views.render_trip_request, name="render_trip_request"),
 
     #Resident
     path('resident/', views.list_residents, name='list_residents'),
     path('resident/create/', views.create_resident, name='create_resident'),
     path('resident/detail/<int:pk>', views.detail_resident, name='detail_resident'),
     path('resident/edit/<int:pk>', views.edit_resident, name='edit_resident'),
+    path('resident/search/', views.resident_search, name="resident_search"),
 
     #Medical Provider
     path('medical_provider/', views.list_medical_provider, name='list_medical_provider'),

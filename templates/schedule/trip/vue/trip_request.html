@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>Create a ride reqest</h1>
+<div id="ride-form">
+    <div id="resident-search">
+        <div class="text-input name-input">
+            <input v-model="first_name">
+            <p>First Name</p>
+        </div>
+        <div class="text-input name-input">
+            <input v-model="last_name">
+            <p>Last Name</p>
+        </div>
+        <div class="DOB-input">
+            <div class="month-input">
+                <input v-model="DOB_month">
+                <p>Month</p>
+            </div>
+            <div class="day-input">
+                <input v-model="DOB_day">
+                <p>Day</p>
+            </div>
+            <div class="year-input">
+                <input v-model="DOB_year">
+                <p>Year</p>
+            </div>
+        </div>
+        <div>
+            <input type="submit" v-on:click="checkSubmit" value="Search">
+        </div>
+    </div> 
+    <div class="resident-display">
+        <div v-if="resident_found">
+            <p>Found: [[resident.first_name]]</p>
+        </div>
+        <div v-else>
+            Please Select A Resident
+        </div>
+    </div>   
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/trip/trip_request.js' %}"></script>
+
+{% endblock scripts %}

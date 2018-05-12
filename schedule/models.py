@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Resident(models.Model):
     first_name=models.CharField(max_length=35)
     last_name=models.CharField(max_length=35)
+    
     date_of_birth = models.DateField()
     medicaid_number = models.CharField(max_length=8, blank=True, null=True)
     room_number = models.CharField(max_length=5)
@@ -12,8 +13,13 @@ class Resident(models.Model):
     wheelchair_van = models.BooleanField(default=True)
     bariatric = models.BooleanField(default=False)
     wheechair_size = models.IntegerField(blank=True, null=True)
+
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.date_of_birth.strftime("%m/%d/%Y")})'
+    
+    @property
+    def full_name(self):
+        return f'{first_name} {last_name}'
     
 class Destination(models.Model):
     name = models.CharField(max_length=100)
@@ -33,9 +39,31 @@ class MedicalProvider(models.Model):
     
 
 class Trip(models.Model):
-    
-    
     arranged_by = models.ForeignKey(User, related_name='trips', on_delete=models.CASCADE) #make this charfield, not track this?    
+    
+    resident = models.ForeignKey(
+        Resident, 
+        related_name='residents',
+        related_query_name='resident', 
+        on_delete=models.CASCADE
+        )
+    procedure = models.CharField(max_length=200)
+    destination = models.ForeignKey(
+        Destination,
+        related_name='destination',
+        on_delete=models.CASCADE
+    )
+    appointment_datetime = models.DateTimeField()
+    strecher = models.BooleanField(default=False)
+    oxygen = models.BooleanField(default=False)
+    oxygen_liters = models.IntegerField(blank=True, null=True)
+    door_to_door = models.BooleanField(default=False) 
+    
+    trip_datetime = models.DateTimeField(blank=True, null=True)
+    return_time = models.DateTimeField(blank=True, null=True)
+    will_call = models.BooleanField(default=False)
+    wait_and_return = models.BooleanField(default=False)
+    
     TRANSPORT_PROVIDERS = (
         ('M', 'Metro West'),
         ('R', 'Ride to Care'),
@@ -45,30 +73,10 @@ class Trip(models.Model):
     )
     transport_provider = models.CharField(max_length=1, choices=TRANSPORT_PROVIDERS)
     
-    resident = models.ForeignKey(
-        Resident, 
-        related_name='residents',
-        related_query_name='resident', 
-        on_delete=models.CASCADE
-        )
-    destination = models.ForeignKey(
-        Destination,
-        related_name='destination',
-        on_delete=models.CASCADE
-    )
-    appointment_datetime = models.DateTimeField()
-    trip_datetime = models.DateTimeField()
-    return_time = models.DateTimeField()
-    will_call = models.BooleanField(default=False)
-    wait_and_return = models.BooleanField(default=False)
-    strecher = models.BooleanField(default=False)
-    oxygen = models.BooleanField(default=False)    
-    oxygen_liters = models.IntegerField(blank=True, null=True)
     representative_notified = models.CharField(max_length=40, blank=True, null=True)
     tripID = models.CharField(max_length=40, blank=True, null=True)    
     notes = models.CharField(max_length=200, blank=True, null=True)
-    procedure = models.CharField(max_length=200)
-    door_to_door = models.BooleanField(default=False)
+    
     created_date = models.DateTimeField(auto_now_add=True)
     trip_scheduled_status = models.BooleanField(default=False)
     

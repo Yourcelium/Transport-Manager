@@ -7,6 +7,7 @@ new Vue({
         days: 7,
         floor: 0,
         loading: false,
+        resident: 'all',
     },
     methods: {
         getTodayTrips: function(){

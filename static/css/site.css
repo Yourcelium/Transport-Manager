@@ -168,5 +168,13 @@ body {
 .trip-form{
   display:grid;
   grid-template-columns: 1fr 1fr;  
-  
+}
+
+.control-panel{
+  padding-bottom: 50px;
+}
+
+.control-panel input{
+  display: block;
+  float: left;
 }
