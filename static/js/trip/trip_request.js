@@ -2,37 +2,52 @@ new Vue({
     el: '#ride-form',
     delimiters: ["[[", "]]"],
     data: {
-        first_name: "First",
-        last_name: "Last",
-        DOB_year: "Year",
-        DOB_month: "Month",
-        DOB_day: "Day",
-        DOB: null,
+        first_name: "",
+        last_name: "",
+        DOB: "",
         resident_found: false,
         resident: null,
-        procedure: "procedure",
-        destination: "destination",
+        procedure: "",
+        destination: "",
         appointment_datetime: null,
         strecher: false,
+        wheelchair: false,
         oxygen: false,
         oxygen_liters: 0,
         arranged_by: null,
+        error : false,
+        error_message: "",
+        destination_list: null,
     },
     methods: {
         searchResidents: function(){
             var self = this
-            self.DOB = self.DOB_year + "-" + self.DOB_month + "-" + self.DOB_day
-            $.get("/schedule/resident/search/" + "?full_name=" + self.first_name + "+" + self.last_name + "&DOB=" + self.DOB)
+            self.DOB = self.DOB.replace(/\/|_/g,'-');
+            $.get("/schedule/resident/search/" + "?first_name=" + self.first_name + "&lastname=" + self.last_name + "&DOB=" + self.DOB)
             .done(function(resident){
+                self.error = false
                 self.resident = resident 
-                self.resident = true
-                 
+                self.resident_found = true
+                console.dir(resident)    
+            })
+            .fail(function(data, textStatus, xhr) {
+                self.error = true
+                self.error_message = "Resident Not Found"
             })
         },
         checkSubmit: function(){
-            console.log("Im here")
             this.searchResidents()        
+        },
+        getDestinations: function(){
+            var self = this
+            $.get("/schedule/destination/list")
+            .done(function(destinations){
+                self.destination_list = destinations
+            })
         } 
+    },
+    created: function(){
+        this.getDestinations()
     }
     
 })

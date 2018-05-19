@@ -13,6 +13,7 @@
     
     {% else %}
     <form action="{% url 'accounts:login' %}">
+        {% csrf_token %}
         <input type="submit" value="Log In">
     </form>
     <form action="{% url 'accounts:register' %}">

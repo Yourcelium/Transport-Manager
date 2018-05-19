@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View, CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.http import JsonResponse
 from django.db.models import Q, QuerySet
+from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import timezone, datetime, timedelta
 from functools import reduce
@@ -130,10 +131,19 @@ def render_trip_request(request):
 
 @api_view(['GET'])
 def resident_search(request):
-    full_name= request.GET.get('full_name')
+    first_name= request.GET.get('first_name')
+    last_name= request.GET.get('first_name')
     DOB = request.GET.get('DOB')
-    resident = Resident.objects.filter(full_name__icontains=full_name)
-    import pdb; pdb.set_trace()
+    DOB = datetime.strptime(DOB, '%m-%d-%Y')
+    try:
+        resident = Resident.objects.get(first_name=first_name, last_name=last_name, date_of_birth=DOB)
+        resident = ResidentSerializer(resident)
+        return Response(resident.data)
+    except:
+        message = "The form has errors"
+        explanation = form.errors.as_data()
+        status_code = 400
+        return JsonResponse({'message':message,'explanation':explanation}, status=status_code)
 
 
 
@@ -213,7 +223,17 @@ class DestinationCreateView(CreateView):
 class DestinationDetailView(DetailView):
     model = Destination
     template_name = 'schedule/destination/detail_destination.html'
-    
+
+@api_view(['GET'])
+def destination_list(request):
+    destinations = Destination.objects.all()
+    destinations = DestinationSerializer(destinations, many=True)
+    return Response(destinations.data)  
+
+
+
+
+#ISSUES    
 def issue_create(request):
     if request.method == 'POST':
         form = IssueForm(request.POST)

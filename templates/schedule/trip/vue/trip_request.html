@@ -6,26 +6,20 @@
 <h1>Create a ride reqest</h1>
 <div id="ride-form">
     <div id="resident-search">
-        <div class="text-input name-input">
-            <input v-model="first_name">
-            <p>First Name</p>
-        </div>
-        <div class="text-input name-input">
-            <input v-model="last_name">
-            <p>Last Name</p>
-        </div>
-        <div class="DOB-input">
-            <div class="month-input">
-                <input v-model="DOB_month">
-                <p>Month</p>
+        <div class="input-field">
+            <div class="text-input name-input">
+                <input v-model="first_name">
+                <p>First Name</p>
             </div>
-            <div class="day-input">
-                <input v-model="DOB_day">
-                <p>Day</p>
+            <div class="text-input name-input">
+                <input v-model="last_name">
+                <p>Last Name</p>
             </div>
-            <div class="year-input">
-                <input v-model="DOB_year">
-                <p>Year</p>
+            <div class="DOB-input">
+                <div class="month-input">
+                    <input v-model="DOB" placeholder="DD/MM/YYYY">
+                    <p>Date of Birth</p>
+                </div>
             </div>
         </div>
         <div>
@@ -33,11 +27,36 @@
         </div>
     </div> 
     <div class="resident-display">
-        <div v-if="resident_found">
-            <p>Found: [[resident.first_name]]</p>
+        <div v-if="resident_found === true">
+            <p>Found: [[resident.first_name]][[resident.last_name]]</p>
         </div>
         <div v-else>
             Please Select A Resident
+        </div>
+        <div v-if="error === true">
+            <p>[[error_message]]</p>
+        </div>
+    </div>
+    <div v-if="resident_found === true">
+        <div class="input-field">
+            <input v-model="procedure">
+            <p>Reason for Trip</p>
+            <select v-model="destination">
+                <option disabled value="">Please select one</option>
+                <option v-for="place in destination_list">[[ place["name"] ]]</option>
+            </select>
+            <p>Destination</p>
+            <input v-model="appointment_datetime" placeholder="">
+            <p>Time and Date of appointment</p>
+            <input v-model="strecher" placeholder="">
+            <p>Strecher</p>
+            <input v-model="oxygen" placeholder="">
+            <p>oxygen</p>
+            <input v-model="oxygen_liters">
+            <p>liters</p>
+        </div>
+        <div>
+            <input type="submit" v-on:click="checkSubmit" value="Search">
         </div>
     </div>   
 </div>
