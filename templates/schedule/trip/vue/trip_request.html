@@ -37,28 +37,51 @@
             <p>[[error_message]]</p>
         </div>
     </div>
+    
     <div v-if="resident_found === true">
         <div class="input-field">
-            <input v-model="procedure">
-            <p>Reason for Trip</p>
-            <select v-model="destination">
-                <option disabled value="">Please select one</option>
-                <option v-for="place in destination_list">[[ place["name"] ]]</option>
-            </select>
-            <p>Destination</p>
-            <input v-model="appointment_datetime" placeholder="">
-            <p>Time and Date of appointment</p>
-            <input v-model="strecher" placeholder="">
-            <p>Strecher</p>
-            <input v-model="oxygen" placeholder="">
-            <p>oxygen</p>
-            <input v-model="oxygen_liters">
-            <p>liters</p>
+            
+            Destination: <input type="text" v-model="search">
+            <div v-for="destination in destinationFilter">
+                <a>[[destination.name]] [[destination.address]]</a>
+            </div>
+            <div>
+                <input type="submit" v-on:click:"newDestination">
+            </div>
         </div>
+    </div>
+    <div v-if="new_destination === true">
+        <div class="input-field">
+            <input v-model="new_destination_name">
+            <p>Clinic Name</p>
+            <input v-model="new_destination_address">
+            <p>Address</p>
+            <input v-model="new_destination_suit">
+            <p>Suit Number</p>
+            <input v-model="new_destination_strecher">
+            <p>Accomidates Strecher</p>
+
+        </div>
+    </div>
+    
+    <div v-if="destination_selected === true">
+        <div class="input-field"
+        <input v-model="procedure">
+        <p>Reason for Trip</p>
+        <input v-model="appointment_datetime" placeholder="">
+        <p>Time and Date of appointment</p>
+        <input v-model="strecher" placeholder="">
+        <p>Strecher</p>
+        <input v-model="oxygen" placeholder="">
+        <p>oxygen</p>
+        <input v-model="oxygen_liters">
+        <p>liters</p>
         <div>
             <input type="submit" v-on:click="checkSubmit" value="Search">
         </div>
-    </div>   
+    </div>
+    
+</div>   
 </div>
 
 {% endblock content %}

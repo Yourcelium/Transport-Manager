@@ -8,7 +8,13 @@ new Vue({
         resident_found: false,
         resident: null,
         procedure: "",
+        
         destination: "",
+        destination_list: null,
+        destination_selected:false,
+        search: "",
+        new_destination: false,
+        
         appointment_datetime: null,
         strecher: false,
         wheelchair: false,
@@ -17,7 +23,12 @@ new Vue({
         arranged_by: null,
         error : false,
         error_message: "",
-        destination_list: null,
+        
+    },
+    computed: {
+        destinationFilter: function() {
+            return this.findBy(this.destination_list, this.search, 'address')
+        }
     },
     methods: {
         searchResidents: function(){
@@ -43,12 +54,23 @@ new Vue({
             $.get("/schedule/destination/list")
             .done(function(destinations){
                 self.destination_list = destinations
+                console.log(self.destination_list)
+                console.log('I ran')
             })
+        },
+        findBy: function (list, value, column) {
+            return list.filter(function (item) {
+                return item[column].includes(value)
+            })
+        },
+        newDestination: function(){
+            this.new_destination = true
         } 
     },
     created: function(){
         this.getDestinations()
-    }
+    },
+    
     
 })
 
