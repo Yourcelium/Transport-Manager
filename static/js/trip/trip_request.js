@@ -2,9 +2,10 @@ new Vue({
     el: '#ride-form',
     delimiters: ["[[", "]]"],
     data: {
-        first_name: "",
-        last_name: "",
-        DOB: "",
+        resident_select: true,
+        first_name: "Test",
+        last_name: "Test",
+        DOB: "01/01/1111",
         resident_found: false,
         resident: null,
         procedure: "",
@@ -14,6 +15,11 @@ new Vue({
         destination_selected:false,
         search: "",
         new_destination: false,
+        new_destination_name: "Test",
+        new_destination_address: "Test",
+        new_destination_suit: "1",
+        new_destination_strecher: false,
+
         
         appointment_datetime: null,
         strecher: false,
@@ -39,6 +45,7 @@ new Vue({
                 self.error = false
                 self.resident = resident 
                 self.resident_found = true
+                self.resident_select = false
                 console.dir(resident)    
             })
             .fail(function(data, textStatus, xhr) {
@@ -55,7 +62,6 @@ new Vue({
             .done(function(destinations){
                 self.destination_list = destinations
                 console.log(self.destination_list)
-                console.log('I ran')
             })
         },
         findBy: function (list, value, column) {
@@ -65,6 +71,37 @@ new Vue({
         },
         newDestination: function(){
             this.new_destination = true
+        },
+        createDestination: function(){
+            var self=this
+            var csrf = $("#_true_csrf").val()
+            console.log(csrf)
+            // $.post( "/schedule/destination/create", { name: self.new_destination_name, address: self.new_destination_address, suit: self.new_destination_suit, strecher: self.new_destination_strecher, csrftoken: csrf } )
+
+            $.ajax({
+                url: '/schedule/destination/create',
+                type: 'post',
+                data: {
+                    name: self.new_destination_name, 
+                    address: self.new_destination_address, 
+                    suit: self.new_destination_suit, 
+                    strecher: self.new_destination_strecher
+                },
+                headers: {
+                    "X-CSRFToken": csrf
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.info(data);
+                }
+            })
+            .done(function(destination){
+                self.destination = destination
+                console.log(self.destination)
+                self.new_destination=false
+            })
+            // $.post("/schedule/destination/create?name=" + self.new_destination_name + "&address=" + self.new_destination_address + "&suit=" + self.new_destination_suit + "&strecher=" + self.new_destination_suit)
+
         } 
     },
     created: function(){

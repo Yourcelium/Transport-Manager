@@ -211,18 +211,7 @@ def edit_medical_provider(request, pk):
 
 
 #DESTINATION
-class DestinationListView(ListView):
-    model = Destination
-    template_name = 'schedule/destination/list_destination.html'
 
-class DestinationCreateView(CreateView):
-    model = Destination
-    template_name = 'schedule/destination/create_destination.html'
-    form_class = DestinationForm
-
-class DestinationDetailView(DetailView):
-    model = Destination
-    template_name = 'schedule/destination/detail_destination.html'
 
 @api_view(['GET'])
 def destination_list(request):
@@ -230,7 +219,15 @@ def destination_list(request):
     destinations = DestinationSerializer(destinations, many=True)
     return Response(destinations.data)  
 
-
+@api_view(['POST'])
+def destination_create(request):
+    form = DestinationForm(request.POST)
+    if form.is_valid():
+        form.save()
+        destination = get_object_or_404(Destination, name=request.POST.get('name'), address=request.POST.get('address') )
+        Response(destination.data)
+    else:
+        Response(form.errors)
 
 
 #ISSUES    

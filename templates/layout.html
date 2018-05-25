@@ -9,6 +9,7 @@
     <link href="//cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
     {% block stylesheets %}{% endblock %}
+    <input type="hidden" id="_true_csrf" value="{{csrf_token}}">    
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">

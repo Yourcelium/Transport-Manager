@@ -1,8 +1,6 @@
 Vue Frontend:
   ☐ complete query params for unscheduled trips @low
-  ☐ dynamic seaching/creating of destinations
-  scehdule ride
-
+  ☐ create Display box of how much of the ride has been set
 Backend:
   ☐ return print out of trip
   ☐ make trip detail eitable field (maybe pops out another window?)

@@ -6,19 +6,21 @@
 <h1>Create a ride reqest</h1>
 <div id="ride-form">
     <div id="resident-search">
-        <div class="input-field">
-            <div class="text-input name-input">
-                <input v-model="first_name">
-                <p>First Name</p>
-            </div>
-            <div class="text-input name-input">
-                <input v-model="last_name">
-                <p>Last Name</p>
-            </div>
-            <div class="DOB-input">
-                <div class="month-input">
-                    <input v-model="DOB" placeholder="DD/MM/YYYY">
-                    <p>Date of Birth</p>
+        <div v-if="resident_select === true">
+            <div class="input-field">
+                <div class="text-input name-input">
+                    <input v-model="first_name">
+                    <p>First Name</p>
+                </div>
+                <div class="text-input name-input">
+                    <input v-model="last_name">
+                    <p>Last Name</p>
+                </div>
+                <div class="DOB-input">
+                    <div class="month-input">
+                        <input v-model="DOB" placeholder="DD/MM/YYYY">
+                        <p>Date of Birth</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +48,8 @@
                 <a>[[destination.name]] [[destination.address]]</a>
             </div>
             <div>
-                <input type="submit" v-on:click:"newDestination">
+                <input type="submit" v-on:click="newDestination" value="New Destination">
+                
             </div>
         </div>
     </div>
@@ -60,7 +63,9 @@
             <p>Suit Number</p>
             <input v-model="new_destination_strecher">
             <p>Accomidates Strecher</p>
-
+            <div>
+                <input type="submit" v-on:click="createDestination" value="Create Destination">
+            </div>
         </div>
     </div>
     

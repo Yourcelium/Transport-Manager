@@ -35,7 +35,7 @@ urlpatterns = [
     path('medical_provider/edit/<int:pk>', views.edit_medical_provider, name='edit_medical_provider'),
 
     #Destination Paths
-    path('destination/', views.DestinationListView.as_view(), name='list_destination'),
+    path('destination/create', views.destination_create, name='destination_create'),
     path('destination/list', views.destination_list, name='destination_list'),
 
     #Issue Paths
