@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.css' %}">
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.structure.css' %}">
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.theme.css' %}">
-
+<link rel="stylesheet" href="{% static 'css/vue2-timepicker.css' %}">
 
 {% endblock stylesheets %}
 
@@ -86,9 +86,10 @@
         <div class="input-field">
             <input v-model="procedure">
             <p>Reason for Trip</p>
-            <input type="text" id="datepicker">
+            <date-picker @update-date="updateDate" date-format="yy-mm-dd" v-once></date-picker>
+            <p>[[ trip_date ]]</p>
             <p>Date</p>
-            <input v-model="appointment_time">
+            <vue-timepicker></vue-timepicker>
             <p>Time</p>
             <input v-model="strecher" placeholder="">
             <p>Strecher</p>
@@ -106,11 +107,12 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'js/trip/trip_request.js' %}"></script>
 <script src="{% static 'js/jquery_ui/jquery-ui.js' %}"></script>
+<script src="{% static 'js/vue2-timepicker.js' %}"></script>
 <script>
-        $( "#datepicker" ).datepicker();
+    Vue.use(window.VueTimepicker)
 </script>
+<script src="{% static 'js/trip/trip_request.js' %}"></script>
 
 
 
