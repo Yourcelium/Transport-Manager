@@ -1,12 +1,32 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block content %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/trip_request.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.structure.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.theme.css' %}">
 
+
+{% endblock stylesheets %}
+
+{% block content %}
 <h1>Create a ride reqest</h1>
 <div id="ride-form">
-    <div id="resident-search">
-        <div v-if="resident_select === true">
+    <div id="content-dislplay">
+        <h3>Trip Details</h3>
+        <div v-if="resident_found === true">
+            <p>Resident: [[resident.first_name]] [[resident.last_name]]</p>
+        </div>
+        <div v-if="destination_selected === true">
+            <p>Destination: [[destination.name]] [[destination.address]]</p>
+        </div>
+        <div v-if="trip_completed === true">
+            <button v-on:click="finishTrip">Finish</button>
+        </div>
+    </div>
+    <div id="resident-search" class="form">
+        <div v-if="resident_select === true" class="input-field">
             <div class="input-field">
                 <div class="text-input name-input">
                     <input v-model="first_name">
@@ -24,19 +44,11 @@
                 </div>
             </div>
         </div>
-        <div>
-            <input type="submit" v-on:click="checkSubmit" value="Search">
-        </div>
-    </div> 
-    <div class="resident-display">
-        <div v-if="resident_found === true">
-            <p>Found: [[resident.first_name]][[resident.last_name]]</p>
-        </div>
-        <div v-else>
-            Please Select A Resident
-        </div>
         <div v-if="error === true">
             <p>[[error_message]]</p>
+        </div>
+        <div>
+            <input type="submit" v-on:click="checkSubmit" value="Search">
         </div>
     </div>
     
@@ -44,8 +56,10 @@
         <div class="input-field">
             
             Destination: <input type="text" v-model="search">
-            <div v-for="destination in destinationFilter">
-                <a>[[destination.name]] [[destination.address]]</a>
+            <div v-for="listed_destination in destinationFilter">
+                <div :data-id="listed_destination.id" v-on:click="selectDestination">
+                    [[listed_destination.name]] [[listed_destination.address]]
+                </div>
             </div>
             <div>
                 <input type="submit" v-on:click="newDestination" value="New Destination">
@@ -68,30 +82,36 @@
             </div>
         </div>
     </div>
-    
     <div v-if="destination_selected === true">
-        <div class="input-field"
-        <input v-model="procedure">
-        <p>Reason for Trip</p>
-        <input v-model="appointment_datetime" placeholder="">
-        <p>Time and Date of appointment</p>
-        <input v-model="strecher" placeholder="">
-        <p>Strecher</p>
-        <input v-model="oxygen" placeholder="">
-        <p>oxygen</p>
-        <input v-model="oxygen_liters">
-        <p>liters</p>
-        <div>
-            <input type="submit" v-on:click="checkSubmit" value="Search">
+        <div class="input-field">
+            <input v-model="procedure">
+            <p>Reason for Trip</p>
+            <input type="text" id="datepicker">
+            <p>Date</p>
+            <input v-model="appointment_time">
+            <p>Time</p>
+            <input v-model="strecher" placeholder="">
+            <p>Strecher</p>
+            <input v-model="oxygen" placeholder="">
+            <p>oxygen</p>
+            <input v-model="oxygen_liters">
+            <p>liters</p>
+            <div>
+                <input type="submit" v-on:click="finishTrip" value="Complete">
+            </div>
         </div>
-    </div>
-    
-</div>   
+    </div>   
 </div>
 
 {% endblock content %}
 
 {% block scripts %}
 <script src="{% static 'js/trip/trip_request.js' %}"></script>
+<script src="{% static 'js/jquery_ui/jquery-ui.js' %}"></script>
+<script>
+        $( "#datepicker" ).datepicker();
+</script>
+
+
 
 {% endblock scripts %}

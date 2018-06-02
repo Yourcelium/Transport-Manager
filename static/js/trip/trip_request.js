@@ -12,7 +12,7 @@ new Vue({
         
         destination: "",
         destination_list: null,
-        destination_selected:false,
+        destination_selected: false,
         search: "",
         new_destination: false,
         new_destination_name: "Test",
@@ -21,7 +21,8 @@ new Vue({
         new_destination_strecher: false,
 
         
-        appointment_datetime: null,
+        appointment_date: null,
+        appointment_time: null,
         strecher: false,
         wheelchair: false,
         oxygen: false,
@@ -29,6 +30,8 @@ new Vue({
         arranged_by: null,
         error : false,
         error_message: "",
+
+        trip_completed: false,
         
     },
     computed: {
@@ -101,6 +104,22 @@ new Vue({
                 self.new_destination=false
             })
             // $.post("/schedule/destination/create?name=" + self.new_destination_name + "&address=" + self.new_destination_address + "&suit=" + self.new_destination_suit + "&strecher=" + self.new_destination_suit)
+
+        },
+        selectDestination: function(event) {
+            self = this
+            var destination_id = event.target.attributes["data-id"]["value"]
+            console.log(destination_id)
+            $.get("/schedule/destination/get/?id=" + destination_id)
+            .done(function(destination){
+                self.destination = destination
+                self.destination_selected = true
+                console.log(self.destination)
+                console.log(self.destination_selected)
+                
+            })
+        },
+        finishTrip: function() {
 
         } 
     },

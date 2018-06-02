@@ -225,10 +225,17 @@ def destination_create(request):
     if form.is_valid():
         form.save()
         destination = get_object_or_404(Destination, name=request.POST.get('name'), address=request.POST.get('address') )
-        Response(destination.data)
+        destination = DestinationSerializer(destination)
+        return Response(destination.data)
     else:
-        Response(form.errors)
+        return Response(form.errors)
 
+@api_view(['GET'])
+def destination_get(request):
+    pk = request.GET.get('id')
+    destination = get_object_or_404(Destination, pk=pk)
+    destination = DestinationSerializer(destination)
+    return Response(destination.data)
 
 #ISSUES    
 def issue_create(request):

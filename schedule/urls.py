@@ -37,6 +37,7 @@ urlpatterns = [
     #Destination Paths
     path('destination/create', views.destination_create, name='destination_create'),
     path('destination/list', views.destination_list, name='destination_list'),
+    path('destination/get/', views.destination_get, name="destination_get"),
 
     #Issue Paths
     path('issue/', views.issue_list, name='issue_list'),
