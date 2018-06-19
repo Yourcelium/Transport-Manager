@@ -6,114 +6,144 @@
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.css' %}">
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.structure.css' %}">
 <link rel="stylesheet" href="{% static 'css/jquery_ui/jquery-ui.theme.css' %}">
-<link rel="stylesheet" href="{% static 'css/vue2-timepicker.css' %}">
+
 
 {% endblock stylesheets %}
 
 {% block content %}
-<h1>Create a ride reqest</h1>
+<h1>Create a Ride Request</h1>
+
 <div id="ride-form">
-    <div id="content-dislplay">
-        <h3>Trip Details</h3>
-        <div v-if="resident_found === true">
-            <p>Resident: [[resident.first_name]] [[resident.last_name]]</p>
+    <div v-if="request_in_progess === true">
+        <div id="content-dislplay">
+            <h3>Trip Details</h3>
+            <div v-if="resident_chosen === true">
+                <p>Resident: [[resident.first_name]] [[resident.last_name]]</p>
+            </div>
+            <div v-if="destination_selected === true">
+                <p>Destination: [[destination.name]] [[destination.address]]</p>
+            </div>
         </div>
-        <div v-if="destination_selected === true">
-            <p>Destination: [[destination.name]] [[destination.address]]</p>
-        </div>
-        <div v-if="trip_completed === true">
-            <button v-on:click="finishTrip">Finish</button>
-        </div>
-    </div>
-    <div id="resident-search" class="form">
-        <div v-if="resident_select === true" class="input-field">
-            <div class="input-field">
-                <div class="text-input name-input">
-                    <input v-model="first_name">
-                    <p>First Name</p>
-                </div>
-                <div class="text-input name-input">
-                    <input v-model="last_name">
-                    <p>Last Name</p>
-                </div>
-                <div class="DOB-input">
-                    <div class="month-input">
-                        <input v-model="DOB" placeholder="DD/MM/YYYY">
-                        <p>Date of Birth</p>
+        <div id="resident-search" class="form">
+            <div v-if="resident_form_display === true" class="input-field">
+                <div class="input-field">
+                    <div class="text-input name-input">
+                        <input v-model="first_name">
+                        <p>First Name</p>
+                    </div>
+                    <div class="text-input name-input">
+                        <input v-model="last_name">
+                        <p>Last Name</p>
+                    </div>
+                    <div class="DOB-input">
+                        <div class="month-input">
+                            <input v-model="DOB" placeholder="DD/MM/YYYY">
+                            <p>Date of Birth</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div v-if="error === true">
-            <p>[[error_message]]</p>
-        </div>
-        <div>
-            <input type="submit" v-on:click="checkSubmit" value="Search">
-        </div>
-    </div>
-    
-    <div v-if="resident_found === true">
-        <div class="input-field">
-            
-            Destination: <input type="text" v-model="search">
-            <div v-for="listed_destination in destinationFilter">
-                <div :data-id="listed_destination.id" v-on:click="selectDestination">
-                    [[listed_destination.name]] [[listed_destination.address]]
+                <div>
+                    <input type="submit" v-on:click="checkSubmit" value="Search">
                 </div>
             </div>
-            <div>
-                <input type="submit" v-on:click="newDestination" value="New Destination">
+            <div v-if="error === true">
+                <div>[[error_message]]</div>
+                <div>
+                    <form target="_blank" action="/schedule/resident/create/">
+                        <input type="submit" value="Create New Resident" />
+                    </form>
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+        <div v-if="destination_list_display === true">
+            <div class="input-field">
                 
+                Destination: <input type="text" v-model="search">
+                <div id="destinations">
+                    <div v-for="listed_destination in destinationFilter">
+                        <div :data-id="listed_destination.id" v-on:click="selectDestination">
+                            [[listed_destination.name]] [[listed_destination.address]]
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" v-on:click="newDestination" value="New Destination">
+                    
+                </div>
             </div>
         </div>
-    </div>
-    <div v-if="new_destination === true">
-        <div class="input-field">
-            <input v-model="new_destination_name">
-            <p>Clinic Name</p>
-            <input v-model="new_destination_address">
-            <p>Address</p>
-            <input v-model="new_destination_suit">
-            <p>Suit Number</p>
-            <input v-model="new_destination_strecher">
-            <p>Accomidates Strecher</p>
-            <div>
-                <input type="submit" v-on:click="createDestination" value="Create Destination">
+        <div v-if="new_destination === true">
+            <div class="input-field">
+                <input v-model="new_destination_name">
+                <p>Clinic Name</p>
+                <input v-model="new_destination_address">
+                <p>Address</p>
+                <input v-model="new_destination_suit">
+                <p>Suit Number</p>
+                <input v-model="new_destination_strecher">
+                <p>Accomidates Strecher</p>
+                <div>
+                    <input type="submit" v-on:click="createDestination" value="Create Destination">
+                </div>
             </div>
         </div>
-    </div>
-    <div v-if="destination_selected === true">
-        <div class="input-field">
-            <input v-model="procedure">
-            <p>Reason for Trip</p>
-            <date-picker @update-date="updateDate" date-format="yy-mm-dd" v-once></date-picker>
-            <p>[[ trip_date ]]</p>
-            <p>Date</p>
-            <vue-timepicker></vue-timepicker>
-            <p>Time</p>
-            <input v-model="strecher" placeholder="">
-            <p>Strecher</p>
-            <input v-model="oxygen" placeholder="">
-            <p>oxygen</p>
-            <input v-model="oxygen_liters">
-            <p>liters</p>
-            <div>
-                <input type="submit" v-on:click="finishTrip" value="Complete">
+        <div v-if="destination_selected === true">
+            <div class="input-field">
+                <div class="input-row">
+                    <label>Reason for Trip</label>
+                    <input v-model="procedure">
+                    
+                </div>
+                <div class="input-row">
+                    <label>Date</label>
+                    <date-picker @update-date="updateDate" date-format="yy-mm-dd" v-once></date-picker>
+                    <label>[[ trip_date ]]</label>
+                    
+                </div>
+                <div class="input-row">
+                    <label>Time</label> 
+                    <input v-model='trip_time' type="time"></input>
+                    
+                </div>
+                <div class="input-row">
+                    <label>Strecher</label>
+                    <input v-model="strecher"  type="checkbox">
+                    
+                </div>
+                <div class="input-row">
+                    <label>Oxygen</label>
+                    <input v-model="oxygen" type="checkbox">
+                    
+                    <label>Liters</label>
+                    <input v-model="oxygen_liters">
+                    
+                </div>
+                <div class="input-row">
+                    <label>Door to Door Service</label>
+                    <input v-model="door_to_door" type="checkbox">
+                    
+                </div>
+                <div class="submit-button">
+                    <input type="submit" v-on:click="finishTrip" value="Complete">
+                </div>
             </div>
         </div>
     </div>   
+    <div v-if="trip_completed === true">
+        <h4>Trip Completed!</h4>
+        <p>[[resident.first_name]] [[resident.last_name]] going to [[destination.name]] at [[destination.address]]</p>
+        <h5>Create Another Trip Request</h5>
+        <a href="{% url 'schedule:render_trip_request' %}">New Request</a>
+    </div>
 </div>
 
 {% endblock content %}
 
 {% block scripts %}
 <script src="{% static 'js/jquery_ui/jquery-ui.js' %}"></script>
-<script src="{% static 'js/vue2-timepicker.js' %}"></script>
-<script>
-    Vue.use(window.VueTimepicker)
-</script>
 <script src="{% static 'js/trip/trip_request.js' %}"></script>
-
-
 
 {% endblock scripts %}

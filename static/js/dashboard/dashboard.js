@@ -16,6 +16,7 @@ new Vue({
             $.get('/schedule/trip/today' + '?floor=' + self.floor)
             .done(function(todayTrips){
                 self.todayTrips = todayTrips
+                console.log(self.todayTrips)         
                 self.loading = false;
             })    
         },
@@ -25,6 +26,7 @@ new Vue({
             $.get('/schedule/trip/future' + '?days=' + self.days + '&floor=' + self.floor)
             .done(function(futureTrips){
                 self.futureTrips = futureTrips
+                console.log(self.futureTrips)
                 self.loading = false;
             })    
         },

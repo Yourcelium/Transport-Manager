@@ -26,7 +26,9 @@
             <h3>Today&#39;s Rides</h3>
             <div v-for="trip in todayTrips">
                 <div class="trip-display">
-                    <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+                    <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]]</a>
+                    <div v-if="trip.trip_scheduled_status === false">Needs Transportation</div>
+                    <div v-else-if="trip.trip_scheduled_status === true"> Pick Up:[[trip.trip_datetime]] with [[trip.transport_provider]]</div>
                 </div>
             </div>
             
@@ -36,7 +38,9 @@
                 <h3>Upcoming Rides</h3>
                 <div v-for="trip in futureTrips">
                     <div class="trip-display">
-                        <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.trip_datetime]]</a>
+                        <a class="trip-link" v-bind:href="'trip/detail/' + trip.id"> [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]]</a>
+                        <div v-if="trip.trip_scheduled_status === false">Needs Transportation</div>
+                    <div v-else-if="trip.trip_scheduled_status === true"> Pick Up:[[trip.trip_datetime]] with [[trip.transport_provider]]</div>
                     </div>
                 </div>
                 

@@ -17,7 +17,7 @@ class TripForm(ModelForm):
 
 class ResidentForm(ModelForm):
     class Meta:
-        model = Trip
+        model = Resident
         fields = '__all__'
 
 class DestinationForm(ModelForm):

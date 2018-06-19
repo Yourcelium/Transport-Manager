@@ -2,8 +2,8 @@
 
 {% block content %}
 {% if request.user.is_authenticated %}
+{% if action == 'create' %}
 <h1>Create a Resident</h1>
-
 <div>
     <form method="POST">
         {% csrf_token %}
@@ -11,6 +11,9 @@
         <button>Create Resident</button>
     </form>
 </div>
+{% elif action == 'complete' %}
+<h1>Resident Created</h1>
+{% endif %}
 {% endif %}
 
 {% endblock content %}

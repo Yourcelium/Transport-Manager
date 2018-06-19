@@ -4,7 +4,10 @@ Vue Frontend:
 Backend:
   ☐ return print out of trip
   ☐ make trip detail eitable field (maybe pops out another window?)
+   make user creation/ admin profiles
+   make it so you cannot request trip in the past, or trip ouside the date
+   
+
 
 Questions:
-  ☐ What does operator do?
   ☐ How is Q object compiling, by OR Operator and storing it in residents? or its just the object that is getting returndcle

@@ -27,7 +27,6 @@ body {
 }
 body {
   color: #F5F2DC;
-  text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
@@ -177,4 +176,18 @@ body {
 .control-panel input{
   display: block;
   float: left;
+}
+
+#destinations {
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+#content {
+  padding: 3.5em
 }

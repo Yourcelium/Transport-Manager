@@ -1,5 +1,5 @@
 Vue.component('date-picker', {
-    template: '<input/>',
+    template: '<input placeholder="Pick Date" />',
     props: [ 'dateFormat'],
     mounted: function() {
         var self = this;
@@ -15,44 +15,45 @@ Vue.component('date-picker', {
     }
 });
 
-Vue.use(VueTimepicker)
-
 new Vue({
     el: '#ride-form',
     delimiters: ["[[", "]]"],
     data: {
-        resident_select: true,
-        first_name: "Test",
-        last_name: "Test",
-        DOB: "01/01/1111",
-        resident_found: false,
+        request_in_progess: true,
+        resident_form_display: true,
+        first_name: "",
+        last_name: "",
+        DOB: "",
+        
         resident: null,
+        resident_chosen: false,
         procedure: "",
         
+        destination_list_display: false,
         destination: "",
         destination_list: null,
         destination_selected: false,
         search: "",
         new_destination: false,
-        new_destination_name: "Test",
-        new_destination_address: "Test",
-        new_destination_suit: "1",
+        new_destination_name: "",
+        new_destination_address: "",
+        new_destination_suit: "",
         new_destination_strecher: false,
         
-        
-        trip_date: null,
-        trip_time: null,
+        trip_date: '',
+        trip_time: '',
+        dateFormat: '',
         strecher: false,
         wheelchair: false,
         oxygen: false,
         oxygen_liters: 0,
-        arranged_by: null,
+        door_to_door: false,
+        
         error : false,
         error_message: "",
         
-        dateFormat: 'yy-mm-dd',
-        
         trip_completed: false,
+        trip: null
         
     },
     computed: {
@@ -60,18 +61,17 @@ new Vue({
             return this.findBy(this.destination_list, this.search, 'address')
         }
     },
-    components: { VueTimepicker },
     methods: {
         searchResidents: function(){
             var self = this
             self.DOB = self.DOB.replace(/\/|_/g,'-');
-            $.get("/schedule/resident/search/" + "?first_name=" + self.first_name + "&lastname=" + self.last_name + "&DOB=" + self.DOB)
+            $.get("/schedule/resident/search/" + "?first_name=" + self.first_name + "&last_name=" + self.last_name + "&DOB=" + self.DOB)
             .done(function(resident){
                 self.error = false
-                self.resident = resident 
-                self.resident_found = true
-                self.resident_select = false
-                console.dir(resident)    
+                self.resident = resident
+                self.destination_list_display = true
+                self.resident_form_display = false
+                self.resident_chosen = true
             })
             .fail(function(data, textStatus, xhr) {
                 self.error = true
@@ -86,7 +86,6 @@ new Vue({
             $.get("/schedule/destination/list")
             .done(function(destinations){
                 self.destination_list = destinations
-                console.log(self.destination_list)
             })
         },
         findBy: function (list, value, column) {
@@ -96,13 +95,11 @@ new Vue({
         },
         newDestination: function(){
             this.new_destination = true
+            this.destination_list_display = false
         },
         createDestination: function(){
             var self=this
             var csrf = $("#_true_csrf").val()
-            console.log(csrf)
-            // $.post( "/schedule/destination/create", { name: self.new_destination_name, address: self.new_destination_address, suit: self.new_destination_suit, strecher: self.new_destination_strecher, csrftoken: csrf } )
-            
             $.ajax({
                 url: '/schedule/destination/create',
                 type: 'post',
@@ -124,9 +121,8 @@ new Vue({
                 self.destination = destination
                 console.log(self.destination)
                 self.new_destination=false
+                self.destination_selected = true
             })
-            // $.post("/schedule/destination/create?name=" + self.new_destination_name + "&address=" + self.new_destination_address + "&suit=" + self.new_destination_suit + "&strecher=" + self.new_destination_suit)
-            
         },
         selectDestination: function(event) {
             var self = this
@@ -135,6 +131,7 @@ new Vue({
             $.get("/schedule/destination/get/?id=" + destination_id)
             .done(function(destination){
                 self.destination = destination
+                self.destination_list_display = false
                 
             })
             self.destination_selected = true
@@ -142,11 +139,40 @@ new Vue({
         },
         finishTrip: function() {
             var self = this
-            console.log(this.trip_date)
-            var trip_datetime = this.trip_date + this.trip_time
+            var appointment_datetime = this.trip_date + " " + this.trip_time
+            console.log(this.trip_time)
+            var csrf = $("#_true_csrf").val()            
+            $.ajax({
+                url: '/schedule/trip/request/create',
+                type: 'post',
+                data:{
+                    resident : self.resident.id,
+                    procedure : self.procedure,
+                    destination : self.destination.id,
+                    appointment_datetime : appointment_datetime,
+                    strecher : self.strecher,
+                    oxygen : self.oxygen,
+                    oxygen_liters : self.oxygen_liters,
+                    door_to_door : self.door_to_door
+                    
+                },
+                headers: {
+                    "X-CSRFToken": csrf
+                },
+                dataType: 'json'
+            })
+            .done(function(trip){
+                self.trip = trip
+                console.log(self.trip)
+                self.destination_selected = false
+                self.trip_completed = true
+                self.request_in_progess = false
+            })
+            .fail(
+                
+            )
         },
         updateDate: function(trip_date) {
-            console.log('update date working')
             this.trip_date = trip_date;
         }
         

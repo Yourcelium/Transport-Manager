@@ -59,7 +59,7 @@ class Trip(models.Model):
     oxygen_liters = models.IntegerField(blank=True, null=True)
     door_to_door = models.BooleanField(default=False) 
     
-    trip_datetime = models.DateTimeField(blank=True, null=True)
+    pick_up_datetime = models.DateTimeField(blank=True, null=True)
     return_time = models.DateTimeField(blank=True, null=True)
     will_call = models.BooleanField(default=False)
     wait_and_return = models.BooleanField(default=False)
@@ -74,7 +74,7 @@ class Trip(models.Model):
     transport_provider = models.CharField(max_length=1, choices=TRANSPORT_PROVIDERS)
     
     representative_notified = models.CharField(max_length=40, blank=True, null=True)
-    tripID = models.CharField(max_length=40, blank=True, null=True)    
+    requestID = models.CharField(max_length=40, blank=True, null=True)    
     notes = models.CharField(max_length=200, blank=True, null=True)
     
     created_date = models.DateTimeField(auto_now_add=True)
@@ -82,7 +82,7 @@ class Trip(models.Model):
     
     #TODO find out how to corretcly represent transportation provider 
     def __str__(self):
-        return f'{self.resident} going to {self.destination.name} on {self.trip_datetime} with {self.transport_provider}'
+        return f'{self.resident} going to {self.destination.name} at {self.appointment_datetime} with {self.transport_provider}'
     
 class Issue(models.Model):
     trip = models.ForeignKey(

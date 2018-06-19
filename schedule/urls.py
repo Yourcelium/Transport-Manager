@@ -6,20 +6,20 @@ urlpatterns = [
     path('', views.dashboard, name="dashboard"),
 
     #Trip Paths
-    # path('trip/', views.home, name='home'),
-    path('trip/', views.list_trips, name='list_trips' ),    
-    path('trip/create/', views.create_trip, name='create_trip'),
+
     path('trip/edit/<int:pk>', views.edit_trip, name='edit_trip'),    
     path('trip/detail/<int:pk>', views.detail_trip, name='detail_trip'),
     path('trip/delete/<int:pk>', views.delete_trip, name='delete_trip'),
-    path('trip/unscheduled/', views.pull_triplist_unscheduled, name='pull_triplist_unscheduled'),
-    path('trip/tp_select/', views.pull_triplist_unscheduled_transport_provider, name='pull_triplist_unscheduled_transport_provider'),
     path('trip/r_select/', views.pull_triplist_unscheduled_resident, name='pull_triplist_unscheduled_resident'),
     path('trip/today', views.list_today_trips, name='list_today_trips'),
     path('trip/future', views.list_future_trips, name='list_future_trips'),
-    path('trip/api_triplist_unscheduled', views.api_triplist_unscheduled, name='api_triplist_unscheduled'),
+    path('trip/api_trip_list', views.api_trip_list, name='api_trip_list'),
     path('trip/api_unscheduled', views.render_unscheduled_triplist, name='api_triplist_unscheduled'),
+    path('trip/request/create', views.trip_request_create, name='trip_request_create'),
     path('trip/request', views.render_trip_request, name="render_trip_request"),
+    path('trip/complete/render/<int:pk>', views.trip_complete_render, name="trip_complete"),
+    path('trip/complete/<int:pk>', views.trip_complete, name="trip_complete"),
+    path('trip/api/detail/<int:pk>', views.api_get_trip, name='api_get_trip'),
 
     #Resident
     path('resident/', views.list_residents, name='list_residents'),
