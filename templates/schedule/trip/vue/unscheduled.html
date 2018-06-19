@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Upcoming Unscheduled Trips</h1>
+<div id="trips-future">
+    <h3>Today *Schedule Needed Immedietly*</h3>
+    <div v-for="trip in today_trips">
+        <a target='_blank' :href="'/schedule/trip/complete/render/' + [[trip.id]]">
+            [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.appointment_datetime]]
+        </a>
+    </div>
+    <h3>Tomorrow *Schedule By End of Day*</h3>
+    <div v-for="trip in tomorrow_trips">
+        <div>
+            [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.appointment_datetime]]
+        </div>
+    </div>
+    <h3>This Week</h3>
+    <div v-for="trip in week_trips">
+        <div>
+            [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.appointment_datetime]]
+        </div>
+    </div>
+    <h3>Beyond This Week</h3>
+    <div v-for="trip in week_plus_trips">
+        <div>
+            [[trip.resident.first_name]] [[trip.resident.last_name]] going to [[trip.destination.name]] at [[trip.appointment_datetime]]
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/trip/unscheduled.js' %}"></script>
+
+{% endblock scripts %}

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+<input type="hidden" id="tripID" value="{{ tripID }}">
+<h1>Complete Trip</h1>
+<div id='trip-complete'>
+    <div class="content-display" v-if="trip">
+        <div>
+            Resident: [[trip.resident.first_name]] [[trip.resident.last_name]]
+        </div>
+        <div>
+            Reason for Trip: [[trip.procedure]]
+        </div>
+        <div>
+            Destination: [[trip.destination.name]] at [[trip.destination.address]] <span v-if= "trip.destination.suite !== null">Suite: [[trip.destination.suite]]</span>
+        </div>
+        <div>
+            Appointment Datetime: [[formatDate(trip.appointment_datetime)]]
+        </div>
+        <div v-if="trip.oxygen === true">
+            Oxygen Liters: [[trip.oxygen_liters]]
+        </div>
+    </div>
+    <div class="input-field">   
+        <select v-model="transport_provider" name="transport_provider">
+            <option value="M">Metro West</option>
+            <option value="R">Ride to Care</option>
+            <option value="T">Trimet Lift</option>
+            <option value="F">Family/Friend</option>
+            <option value="C">Cab</option>
+        </select>
+        <p> Transport Provider</p>
+        <input v-if="transport_provider === 'R'" v-model="requestID">
+        <p v-if="transport_provider === 'R'">Trip Request ID #</p>
+        <input v-model="pick_up_time" type="time">
+        <p>Pick Up Time</p>
+        <input v-model="return_time" type="time">
+        <p>Return Time</p>
+        <input v-model="notes" type="text">
+        <p>Notes</p>
+        <input type="submit" v-on:click="finishTrip" value="Complete">
+    </div>
+    <div class="error-message" v-if="error === true">
+        ERROR: [[error_message]]
+    </div>
+</div>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+<script src="{% static 'js/jquery_ui/jquery-ui.js' %}"></script>
+<script src="{% static 'js/trip/complete.js' %}"></script>
+{% endblock scripts %}
