@@ -113,7 +113,7 @@ def api_trip_list(request):
     timerange = request.GET.get('timerange')
     tomorrow_midnight = tomorrow + timedelta(days=1)
     week = tomorrow + timedelta(days=6)
-    
+
     if timerange =='today':
         trips = Trip.objects.filter(appointment_datetime__gte=datetime.now(), appointment_datetime__date__lte=tomorrow)
     elif timerange =='tomorrow':
@@ -128,6 +128,7 @@ def api_trip_list(request):
         trips = trips.filter(resident__room_number__startswith = floor)
     
     trips = TripSerializer(trips, many=True)
+    import pdb; pdb.set_trace()
     return Response(trips.data)
 
 def render_trip_request(request):
@@ -187,11 +188,9 @@ def trip_request_create(request):
     resident = get_object_or_404(Resident, pk=request.POST.get('resident'))
     destination = get_object_or_404(Destination, pk=request.POST.get('destination'))
     appointment_datetime = request.POST.get('appointment_datetime')
-    import pdb; pdb.set_trace()
     appointment_datetime = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M')
     procedure = request.POST.get('procedure')
     strecher = request.POST.get('strecher')
-    import pdb; pdb.set_trace()
     if strecher == 'false':
         strecher = False
     else:
