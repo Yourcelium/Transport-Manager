@@ -52,9 +52,12 @@ new Vue({
         }
     },
     created: function(){
+        console.log('im here')
         this.getTodayTrips()
         this.getTomorrowTrips()
         this.getWeekTrips()
         this.getWeekPlusTrips()
+        console.log('im still here')
+
     }
 })
